@@ -1,0 +1,198 @@
+\chapter{\IfLanguageName{dutch}{Integratie van alle componenten}{Integratie van alle componenten}}
+\label{ch:Integratie-van-alle-componenten}
+
+\section{Integratie van alle componenten}
+
+Nu zowel het detectiemodel als de fysieke opstelling beschikbaar zijn, kunnen deze componenten geïntegreerd worden in één werkend systeem. In dit hoofdstuk wordt stap voor stap uitgelegd hoe videobeelden worden ingelezen en hoe het AI-model deze beelden in real time analyseert.
+
+\section{Inlezen van HDMI-videobeelden}
+
+Om de gameplay van de gamecomputer te analyseren, wordt het HDMI-signaal via een capture card doorgestuurd naar de detectiecomputer. Deze capture card wordt door het besturingssysteem herkend als een standaard camera (webcam).
+
+Met behulp van OpenCV kan deze videostream eenvoudig worden ingelezen:
+
+\begin{minted}{python}
+import cv2
+
+HDMI_INDEX = 1  # Index van de capture card
+
+cap = cv2.VideoCapture(HDMI_INDEX, cv2.CAP_DSHOW)
+\end{minted}
+
+Hierbij stelt \texttt{HDMI\_INDEX} het apparaatnummer voor van de capture card. De parameter \texttt{cv2.CAP\_DSHOW} zorgt ervoor dat de DirectShow backend gebruikt wordt, wat vaak stabieler is op Windows-systemen.
+
+Vervolgens wordt de videostream frame per frame ingelezen:
+
+\begin{minted}{python}
+ret, frame = cap.read()
+\end{minted}
+
+Indien \texttt{ret} gelijk is aan \texttt{True}, werd het frame succesvol opgehaald en kan dit verder verwerkt worden. Elk frame stelt een afbeelding voor die overeenkomt met het huidige beeld van de game.
+
+\section{Integratie van het AI-model}
+
+Nadat het videobeeld beschikbaar is, kan het getrainde AI-model toegepast worden op elk frame.
+
+Eerst wordt het YOLO-model geladen:
+
+\begin{minted}{python}
+from ultralytics import YOLO
+import torch
+
+MODEL_PATH = "weightsV4.pt"
+
+model = YOLO(MODEL_PATH)
+device = 0 if torch.cuda.is_available() else "cpu"
+\end{minted}
+
+Hierbij wordt automatisch gekozen tussen GPU (\texttt{cuda}) en CPU, afhankelijk van de beschikbare hardware.
+
+Voor elk frame wordt vervolgens een voorspelling uitgevoerd:
+
+\begin{minted}{python}
+results = model.predict(frame, imgsz=320, conf=0.5, device=device, verbose=False)
+\end{minted}
+
+Het model analyseert het beeld en retourneert een lijst van detecties. Elke detectie bevat onder andere de positie van een bounding box en een confidence score.
+
+\section{Visualisatie van detecties}
+
+Om de werking van het model zichtbaar te maken, worden de gedetecteerde objecten gevisualiseerd door middel van bounding boxes.
+
+\begin{minted}{python}
+for r in results:
+    for box in r.boxes:
+        x1, y1, x2, y2 = map(int, box.xyxy[0])
+
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+        conf = float(box.conf[0])
+        cv2.putText(frame, f"Target {conf:.2f}", (x1, y1 - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+\end{minted}
+
+Hierbij:
+\begin{itemize}
+    \item \texttt{(x1, y1)} en \texttt{(x2, y2)} de hoeken van de bounding box voorstellen;
+    \item de rechthoek visueel rond het doelwit wordt getekend;
+    \item de confidence score aangeeft hoe zeker het model is van de detectie.
+\end{itemize}
+
+\section{Realtime verwerking}
+
+Door deze stappen te combineren in een continue lus ontstaat een realtime detectiesysteem:
+
+\begin{minted}{python}
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    results = model.predict(frame, imgsz=320, conf=0.5, device=device, verbose=False)
+
+    # detecties tekenen ...
+
+    cv2.imshow("HDMI AI Monitor", frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+\end{minted}
+
+Hierbij worden frames continu ingelezen, geanalyseerd en weergegeven. De vertraging tussen input en output blijft minimaal, wat essentieel is voor real-time toepassingen.
+
+\section{Omzetten van detectie naar muisbeweging}
+
+Na het detecteren van een doelwit via het AI-model moet de positie van dit doelwit omgezet worden naar een concrete muisbeweging. Dit gebeurt door het verschil te berekenen tussen het midden van het scherm en de positie van het gedetecteerde object.
+
+In de implementatie wordt eerst het midden van het beeld bepaald:
+
+\begin{minted}{python}
+self.center_x = self.real_w // 2
+self.center_y = self.real_h // 2
+\end{minted}
+
+Wanneer een target gedetecteerd wordt, wordt het middelpunt van de bounding box berekend:
+
+\begin{minted}{python}
+target_x = (x1 + x2) // 2
+target_y = (y1 + y2) // 2
+\end{minted}
+
+Vervolgens wordt de afwijking ten opzichte van het schermcentrum bepaald:
+
+\begin{minted}{python}
+self.diff_x = target_x - self.center_x
+self.diff_y = target_y - self.center_y
+\end{minted}
+
+Deze waarden stellen de noodzakelijke muisbeweging voor om het richtpunt naar het doelwit te verplaatsen.
+
+\section{Schalen van de muisbeweging}
+
+Omdat verschillende systemen en games gebruikmaken van andere gevoeligheidsinstellingen, wordt een schaalfactor (\textit{modifier}) toegepast op de berekende afwijking:
+
+\begin{minted}{python}
+modifier = float(self.entry_mod.get())
+final_x = int(self.diff_x * modifier)
+final_y = int(self.diff_y * modifier)
+\end{minted}
+
+Deze modifier laat toe om de snelheid en nauwkeurigheid van de muisbeweging af te stemmen op de configuratie van de gebruiker. Als deze waardes niet goed zijn ingestelt, kan dit zorgen voor over- of underflick. Bij overflick is de muis beweging veel te aggresief en kan dit zorgen voor een soort vering die over de detectie vliegt maar elke keer kleiener en kleiner wordt. bij underflick zal de beweging te kort zijn waardoor het eerder zal lijken op een snelle animatie in plaats van een snelle beweging.
+
+\section{Seriële communicatie met de Arduino}
+
+De berekende muisbeweging wordt doorgestuurd naar een Arduino Leonardo via een seriële verbinding. Deze Arduino fungeert als HID-emulator en zet de ontvangen waarden om naar echte muisinput.
+
+De seriële verbinding wordt geïnitialiseerd met:
+
+\begin{minted}{python}
+self.ser = serial.Serial(PORT, BAUDRATE, timeout=0)
+\end{minted}
+
+Wanneer een muisbeweging moet uitgevoerd worden, worden de waarden verstuurd in tekstformaat:
+
+\begin{minted}{python}
+command = f"{final_x},{final_y}\n"
+self.ser.write(command.encode())
+\end{minted}
+
+Hierbij:
+\begin{itemize}
+    \item \texttt{final\_x} de horizontale beweging voorstelt;
+    \item \texttt{final\_y} de verticale beweging voorstelt;
+    \item het newline-teken (\texttt{\textbackslash n}) gebruikt wordt om het einde van het bericht aan te duiden.
+\end{itemize}
+
+\section{Praktische werking van het systeem}
+
+Het volledige proces verloopt als volgt:
+
+\begin{enumerate}
+    \item Een videoframe wordt ingelezen via de capture card;
+    \item Het AI-model detecteert een doelwit;
+    \item De positie van het doelwit wordt omgezet naar een afwijkingsvector;
+    \item Deze vector wordt geschaald met een gevoeligheidsfactor;
+    \item De resulterende waarden worden via seriële communicatie doorgestuurd;
+    \item De Arduino Leonardo zet deze waarden om naar muisbewegingen.
+\end{enumerate}
+
+Voor testdoeleinden werd een \textit{flick}-functie geïmplementeerd die de volledige berekende beweging in één keer uitvoert:
+
+\begin{minted}{python}
+def send_flick(self):
+    if self.ser and (self.diff_x != 0 or self.diff_y != 0):
+        modifier = float(self.entry_mod.get())
+        final_x = int(self.diff_x * modifier)
+        final_y = int(self.diff_y * modifier)
+        
+        command = f"{final_x},{final_y}\n"
+        self.ser.write(command.encode())
+\end{minted}
+
+Deze functie laat toe om de nauwkeurigheid van het systeem te testen en de optimale gevoeligheidsinstellingen te bepalen.
+
+\section{Conclusie}
+
+Door de combinatie van computer vision en seriële communicatie ontstaat een volledig extern systeem dat automatisch muisbewegingen kan genereren op basis van visuele input.
+
+Omdat de uiteindelijke input via een HID-apparaat verloopt, wordt deze door het besturingssysteem behandeld als legitieme gebruikersinput. Dit maakt de aanpak moeilijk detecteerbaar door traditionele anti-cheatsystemen.

@@ -26,5 +26,81 @@
 %% Maak voor elke fase (behalve het literatuuronderzoek) een NIEUW HOOFDSTUK aan
 %% en geef het een gepaste titel.
 
-\lipsum[21-25]
+De opbouw van dit project is opgedeeld in verschillende fases. In de eerste fase is er onderzoek gedaan naar welke kern componenten een cheat bevat.
+Deze componenten zijn gebestudeerd en gerepliceert om een concreet inzicht te krijgen in de werking van deze software en om toe te passen tijdens de analyse.
+\\\\
+In de tweede fase is werd er onderzocht hoe er een verbinding kan gemaakt worden van de hoofd computer naar de computer waar de cheat op draait en omgekeerd.
+Voor een verbinding van de hoofd computer naar de cheat computer wordt een HDMI capture card gebruikt om de cheat computer visuele input te kunnen geven om op te reageren.
+De verbinding van cheat computer naar hoofd computer wordt gedaan door een Arduino waar muis- en toetsenbordinput wordt vervalst.
+\\\\
+De derde fase legt uit hoe het model getraind wordt en wat de reactie zal zijn. Het model wordt getrained om de vijand te herkennen en als reactie het middenpunt van de computer te verplaatsen naar de figuur.
+Vervolgens zal er geschoten worden tot het model identificeert dat de vijand niet meer leeft en dood is. Wanneer de vijand dood is zal het model terug op stand by blijven tot het opnieuw een vijandige speler detecteert.
+\\\\
+In de vierde fase wordt er data verzameld door een logbestand te maken waar muis- en toetsenbordinput in verzameld wordt en wanneer de cheat wel en niet geactiveerd wordt.
+Hier wordt een model op getrained waar we een signaal van krijgen wanneer er vals gespeeld wordt.
+\\\\
+De laatste fase bevat de resultaten van deze opstelling, De conclusie en de aanbevelingen.
 
+
+First-person shooters maken gebruik van een recoil-mechanisme bij het afvuren van wapens zoals geweren en pistolen. Dit mechanisme zorgt ervoor dat het richtpunt (crosshair) na elk schot verschuift, meestal door een kleine rotatie van de camera omhoog of opzij. Hierdoor moet de speler continu zijn aim corrigeren om accuraat te blijven. Recoil verhoogt zowel het realisme als de moeilijkheidsgraad van het spel. In competitieve games zoals Tom Clancy's Rainbow Six Siege is het beheersen van recoil een essentiële vaardigheid.
+
+Wapens in games kunnen verschillende vuurmodi hebben, die invloed hebben op hoe recoil zich gedraagt:
+\begin{itemize}
+\item \textbf{Single shot}: Er wordt één kogel per klik afgevuurd. Tussen de schoten door krijgt de recoil meestal de tijd om te herstellen.
+\item \textbf{Burst fire}: Het wapen vuurt automatisch een korte reeks kogels af per klik. Tijdens deze reeks bouwt de recoil zich op.
+\item \textbf{Automatisch vuur (spray)}: Het wapen blijft continu vuren zolang de knop wordt ingedrukt. De recoil stapelt zich hierbij op en wordt moeilijker te controleren.
+\end{itemize}
+
+Het bewegingsgedrag van een wapen tijdens het schieten wordt het \textit{recoil pattern} genoemd. Hierbij kunnen verschillende vormen worden onderscheiden:
+\begin{itemize}
+\item \textbf{Pattern recoil}: De recoil volgt een vast patroon, waardoor spelers dit kunnen leren en compenseren.
+\item \textbf{Random recoil}: De richting van de recoil is deels willekeurig, meestal binnen een bepaalde spreiding. Dit maakt het moeilijker om exact te voorspellen.
+\item \textbf{Verticale recoil}: De recoil veroorzaakt voornamelijk een opwaartse beweging van het richtpunt.
+\item \textbf{Horizontale recoil}: De recoil veroorzaakt een zijwaartse beweging, wat vaak moeilijker te controleren is.
+\end{itemize}
+
+Naast de basisrecoil bestaan er meerdere systemen die de moeilijkheid en realisme beïnvloeden:
+\begin{itemize}
+\item \textbf{Recoil recovery / reset}: Hoe snel het wapen terugkeert naar de originele positie na het stoppen met schieten. Dit is belangrijk voor tap firing en burst control.
+\item \textbf{Spread / bloom}: Bij langdurig vuren wordt de kogelafwijking groter, zelfs als de speler perfect compenseert.
+\item \textbf{Fire rate}: Wapens met een hogere vuursnelheid bouwen sneller recoil op, waardoor ze moeilijker te controleren zijn.
+\item \textbf{Recoil accumulation}: Recoil neemt toe naarmate er langer wordt geschoten; de eerste schoten zijn vaak accurater dan de latere schoten tijdens sprayen.
+\item \textbf{First shot accuracy}: Het eerste schot van een wapen is vaak extra nauwkeurig of heeft minder recoil, wat tap firing beloont.
+\item \textbf{Spelerstatus}: Recoilgedrag kan veranderen afhankelijk van of de speler loopt, staat, hurkt of springt. Stilstaan of hurken vermindert vaak de recoil.
+\item \textbf{Wapenaccessoires}: Accessoires zoals grips of compensators verminderen recoil in verticale of horizontale richting, terwijl suppressors soms juist meer recoil geven.
+\item \textbf{Visual vs. daadwerkelijke recoil}: In sommige games is de visuele camera-beweging groter dan de werkelijke bullet deviation. Spelers zien bijvoorbeeld een camera shake, terwijl de kogels iets anders gaan.
+\item \textbf{Crosshair gedrag}: Sommige games tonen recoil via het vergroten of bewegen van het crosshair, terwijl andere het statisch houden en alleen de kogels beïnvloeden.
+\item \textbf{Skill ceiling vs. skill floor}: Pattern recoil biedt een hoge skill ceiling omdat spelers het patroon kunnen leren, terwijl random recoil de skill gap verlaagt en meer toegankelijk is voor casual spelers.
+\end{itemize}
+
+Door deze systemen samen te gebruiken, ontstaat een dynamisch wapenmodel waarin zowel timing, positionering als beheersing van recoil een rol spelen. Dit maakt het beheersen van wapens een combinatie van mechanische vaardigheid en strategische keuzes binnen de gameplay.
+
+
+Voor de opstelling van de Proof-of-Concept zijn de volgende componenten gebruikt:
+\begin{itemize}
+\item 2 computers
+\item 1 Arduino Leonardo
+\item 1 HDMI-kabel
+\item 1 HDMI capturecard
+\item Garry's Mod
+\end{itemize}
+
+\newpage
+
+\subsection{Beschrijving van de componenten en hun functies}
+
+\textbf{Garry's Mod (GMod)} is een sandbox-spel gebaseerd op de Source-engine, dat gebruikers de mogelijkheid biedt om vrijwel alles te programmeren en eigen proefopstellingen te maken. Het wordt in deze opstelling gebruikt omdat het een flexibele en gebruiksvriendelijke omgeving biedt waarin we tests kunnen uitvoeren, zoals het simuleren van muisinteracties en het observeren van in-game gedrag.
+
+\textbf{Arduino Leonardo} wordt ingezet om muisinput te genereren. In tegenstelling tot andere Arduino-modellen kan de Leonardo zichzelf identificeren als een HID-apparaat (Human Interface Device), zoals een toetsenbord of muis. Hierdoor kan het systeem automatisch muisbewegingen en klikcommando’s versturen naar de hostcomputer, wat essentieel is voor het testen van geautomatiseerde besturing of Proof-of-Concept interacties.
+
+\textbf{HDMI capturecard} wordt gebruikt om de HDMI-output van de hostcomputer te ontvangen en beschikbaar te maken voor de tweede computer. Dit apparaat neemt het videosignaal van de hostcomputer op en stuurt dit door naar de computer waarop het model draait, zodat het model de beelden kan verwerken en analyseren. Het gebruik van een capturecard is noodzakelijk omdat de computer waarop het model draait geen directe toegang heeft tot de beeldoutput van het spel, waardoor een fysieke videostream nodig is.
+
+\subsection{Opstelling}
+
+De opstelling bestaat uit twee computers met de volgende rollen:
+\begin{itemize}
+\item \textbf{Computer 1:} Deze computer ontvangt de HDMI-output van de hostcomputer via de capturecard, verwerkt de beelden met het model en genereert de muisbewegingen die via de Arduino Leonardo naar de hostcomputer worden gestuurd.
+\item \textbf{Computer 2 (hostcomputer):} Deze computer draait Garry's Mod in fullscreen en verzendt de HDMI-output naar Computer 1. Tegelijkertijd ontvangt deze computer de gegenereerde muisinput van de Arduino, waarmee de interactie met het spel mogelijk wordt gemaakt.
+\end{itemize}
+
+Door deze opstelling kunnen we een volledig gesloten testomgeving creëren waarin het model visuele input kan verwerken en realtime muisinteracties kan uitvoeren in Garry’s Mod. Dit maakt het ideaal voor experimenten en Proof-of-Concept tests in een gecontroleerde en programmeerbare sandbox-omgeving.

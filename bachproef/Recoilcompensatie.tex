@@ -1,0 +1,168 @@
+\chapter{\IfLanguageName{dutch}{Recoilcompensatie}{Recoilcompensatie}}
+\label{ch:Recoilcompensatie}
+
+\section{Recoilcompensatie}
+
+Bij FPS-games met vaste of semi-vaste recoilpatronen kan de terugslag van een wapen mathematisch gemodelleerd worden. Omdat de richting van opeenvolgende kogels vaak een voorspelbaar patroon volgt, is het mogelijk om een compensatievector te berekenen die de recoil gedeeltelijk of volledig neutraliseert.
+
+Wanneer een speler automatisch vuur gebruikt, ontstaat een zogenaamd \textit{spray pattern}. Dit patroon stelt de opeenvolgende impactpunten van kogels voor tijdens langdurig schieten.
+
+Indien de positie van elk schot gekend is, kan de relatieve verplaatsing tussen opeenvolgende kogels berekend worden.
+
+Stel dat een spray pattern bestaat uit opeenvolgende punten:
+
+\[
+P_n = (x_n, y_n)
+\]
+
+waarbij:
+\begin{itemize}
+    \item \(x_n\) de horizontale positie van schot \(n\) voorstelt;
+    \item \(y_n\) de verticale positie van schot \(n\) voorstelt.
+\end{itemize}
+
+De relatieve recoilverplaatsing tussen twee opeenvolgende kogels wordt dan:
+
+\[
+\Delta x = x_n - x_{n-1}
+\]
+
+\[
+\Delta y = y_n - y_{n-1}
+\]
+
+\newpage
+
+Deze waarden beschrijven hoeveel het richtpunt verschuift na elk schot.
+
+Om recoil te compenseren moet het systeem een inverse beweging uitvoeren:
+
+\[
+C_x = -\Delta x
+\]
+
+\[
+C_y = -\Delta y
+\]
+
+Hierbij stellen:
+\begin{itemize}
+    \item \(C_x\) de horizontale compensatie voor;
+    \item \(C_y\) de verticale compensatie voor.
+\end{itemize}
+
+Wanneer deze inverse vector na elk schot toegepast wordt via muisinput, kan de effectieve terugslag aanzienlijk verminderd worden.
+
+\section{Analyse van spray patterns}
+
+Voor deze bachelorproef werd een eigen analysetool ontwikkeld waarmee recoilpatronen geanalyseerd kunnen worden op basis van afbeeldingen van spray patterns.
+
+Binnen deze tool kan een gebruiker een afbeelding uploaden waarop het volledige spray pattern van een wapen zichtbaar is.
+
+Vervolgens kunnen alle impactpunten manueel chronologisch aangeduid worden. Op basis van deze punten berekent het programma automatisch:
+
+\begin{itemize}
+    \item de afstand tussen opeenvolgende schoten;
+    \item de horizontale afwijking;
+    \item de verticale afwijking;
+    \item de cumulatieve recoil;
+    \item de inverse compensatievectoren.
+\end{itemize}
+
+Doordat de punten manueel geselecteerd worden, blijft het mogelijk om zeer nauwkeurige recoilgegevens te verkrijgen, zelfs wanneer het spray pattern complexe of niet-lineaire vormen bevat.
+
+De software genereert vervolgens een reeks compensatiecoördinaten die gebruikt kunnen worden binnen een recoilcompensatiesysteem.
+\newpage
+\section{Invloed van sensitivity}
+
+Een belangrijke factor binnen recoilcompensatie is de gevoeligheidsinstelling (\textit{sensitivity}) van de speler.
+
+Dezelfde fysieke muisbeweging resulteert namelijk niet altijd in dezelfde camerabeweging binnen de game. Dit hangt af van:
+\begin{itemize}
+    \item de ingestelde sensitivity;
+    \item de DPI van de computermuis;
+    \item de interne input scaling van de game-engine.
+\end{itemize}
+
+Hierdoor moet de berekende compensatie geschaald worden op basis van de gebruikte sensitivity.
+
+Indien:
+\[
+S
+\]
+
+de sensitivity-factor voorstelt, dan wordt de uiteindelijke compensatie:
+
+\[
+M_x = \frac{C_x}{S}
+\]
+
+\[
+M_y = \frac{C_y}{S}
+\]
+
+Hierbij stellen:
+\begin{itemize}
+    \item \(M_x\) de effectieve horizontale muisbeweging voor;
+    \item \(M_y\) de effectieve verticale muisbeweging voor.
+\end{itemize}
+
+Binnen de ontwikkelde analysetool kan deze sensitivity dynamisch aangepast worden zodat de gegenereerde compensatie optimaal afgestemd wordt op de configuratie van de gebruiker.
+
+Hierdoor blijft het systeem bruikbaar bij verschillende instellingen en hardwareconfiguraties.
+
+\section{Praktische toepassing}
+
+De berekende compensatievectoren kunnen vervolgens realtime doorgestuurd worden naar een HID-emulatiesysteem, zoals een Arduino Leonardo.
+\\\\
+Tijdens automatisch vuur wordt voor elk schot een kleine inverse muisbeweging uitgevoerd waardoor het richtpunt dichter bij het oorspronkelijke doel blijft.
+\\\\
+Omdat vaste recoilpatronen vaak deterministisch zijn, kan een correct gekalibreerd systeem de terugslag zeer nauwkeurig compenseren.
+
+\section{Recoilcompensatie via een Arduino Leonardo}
+
+Binnen deze bachelorproef wordt een Arduino Leonardo gebruikt om de berekende compensatievectoren fysiek om te zetten naar muisinput.
+\\\\
+De Arduino Leonardo is hiervoor geschikt omdat de microcontroller beschikt over ingebouwde USB-HID-functionaliteit. Hierdoor kan het apparaat door het besturingssysteem herkend worden als een standaard computermuis.
+\\\\
+De detectiecomputer berekent tijdens het schieten continu de benodigde compensatievectoren:
+
+\[
+(C_x, C_y)
+\]
+
+Deze waarden worden via seriële communicatie doorgestuurd naar de Arduino Leonardo.
+
+De Arduino ontvangt vervolgens de horizontale en verticale compensatiecoördinaten en zet deze om naar HID-muisbewegingen via de ingebouwde \texttt{Mouse.h}-bibliotheek.
+
+Wanneer bijvoorbeeld een verticale recoil van:
+
+\[
+\Delta y = 8
+\]
+
+gedetecteerd wordt, zal het systeem automatisch een inverse beweging uitvoeren:
+
+\[
+C_y = -8
+\]
+
+waardoor de muis enkele pixels naar beneden beweegt om de stijgende recoil tegen te werken.
+
+Dit proces wordt continu herhaald zolang automatisch vuur actief blijft. Hierdoor ontstaat een realtime compensatiesysteem dat de recoil dynamisch corrigeert tijdens het schieten.
+
+Omdat de Arduino werkt als fysiek HID-apparaat, wordt de gegenereerde input door het besturingssysteem behandeld als normale menselijke muisinput.
+
+De uiteindelijke bewegingsvector die naar de Arduino verstuurd wordt, kan voorgesteld worden als:
+
+\[
+M = (M_x, M_y)
+\]
+
+waarbij:
+\begin{itemize}
+    \item \(M_x\) de horizontale compensatiebeweging voorstelt;
+    \item \(M_y\) de verticale compensatiebeweging voorstelt.
+\end{itemize}
+
+Door deze techniek kan recoilcompensatie extern uitgevoerd worden zonder rechtstreeks in te grijpen in het geheugen of de processen van de game-engine.
