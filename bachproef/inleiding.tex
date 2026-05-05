@@ -5,46 +5,59 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt. Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
 
-\begin{itemize}
-  \item context, achtergrond
-  \item afbakenen van het onderwerp
-  \item verantwoording van het onderwerp, methodologie
-  \item probleemstelling
-  \item onderzoeksdoelstelling
-  \item onderzoeksvraag
-  \item \ldots
-\end{itemize}
+Het doel van dit onderzoek is om te achterhalen hoe de ontwikkeling van AI-gebaseerde cheats ontwikkeld worden en hoe we dit kunnen tegen gaan en hiervoor is de volgende onderzoeksvraag opgesteld: Hoe worden AI-gebaseerde cheats ontwikkeld en welke methoden kunnen worden ontwikkeld deze te identificeren op basis van spelersgedrag en interactiepatronen? Spelersgedrag is hierbij de fysieke muisbeweging en reactiesnelheid waar de speler op bepaalde instanties reageert.
+\\\\
+Om een antwoord te kunnen geven op de onderzoeksvraag zullen we eerst kijken hoe het vervalsen van muis en toetsenbord input gebeurd door een 2de computer. Vervolgens wordt er onderzocht hoe een model getrained wordt op het detecteren en reageren op anomalieën. Ten slotte wordt een analyse gemaakt op de verzamelde gebruikers input om anomalieën te detecteren die zouden kunnen lijden naar het gebruiken van AI-gebaseerde cheats. 
+\\\\
+De resultaten van dit onderzoek zullen leiden tot een raamwerk dat de specifieke gedrags- en inputkenmerken identificeert die wijzen op het gebruik van AI-gebaseerde cheats. Dit zal resulteren in een aanbeveling voor de meest geschikte machine learning-methoden voor het detecteren van afwijkend spelersgedrag, waarmee een oplossing voor dit probleem kan gevonden worden.
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+Met de groeiende opkomst van AI-gebaseerde cheats worden traditionele anti-cheatmethoden steeds minder effectief. Deze moderne cheats kunnen menselijke input realistisch nabootsen of manipuleren via een tweede computer, waardoor klassieke detectiesystemen moeite hebben om afwijkend gedrag te herkennen. Dit vormt een dringend probleem voor organisaties die betrokken zijn bij het waarborgen van eerlijk spel.  
 
-\section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
+De concrete doelgroep van dit onderzoek bestaat uit game-ontwikkelaars, anti-cheatteams en onderzoekers die zich bezighouden met gedragsanalyse in online gamingomgevingen. Zij hebben nood aan nieuwe benaderingen die zich richten op het detecteren van subtiele anomalieën in input- en gedragsdata die specifiek verband houden met AI-gebaseerde cheats.
+
+\section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research Question}}%
 \label{sec:onderzoeksvraag}
 
-Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
+De centrale onderzoeksvraag van deze bachelorproef luidt als volgt:
 
-\section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
+\begin{quote}
+\textbf{Hoe worden AI-gebaseerde cheats ontwikkeld en welke methoden kunnen worden ontworpen om deze te identificeren op basis van spelersgedrag en interactiepatronen?}
+\end{quote}
+
+Deze vraag wordt verder opgesplitst in de volgende deelvragen:
+
+\begin{itemize}
+    \item Hoe worden muis- en toetsenbordinputs gemanipuleerd met behulp van een tweede computer?
+    \item Welke machine-learningmethoden zijn geschikt om anomalieën in spelersgedrag te detecteren?
+    \item Welke gedrags- en inputpatronen zijn kenmerkend voor het gebruik van AI-gebaseerde cheats?
+    \item Welke gegevens leveren de meest betrouwbare signalen voor een detectiesysteem?
+\end{itemize}
+
+\section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research Objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
+Het doel van deze bachelorproef is het ontwikkelen van een raamwerk dat gedrags- en inputkenmerken identificeert die wijzen op de aanwezigheid van AI-gebaseerde cheats. Dit gebeurt door het analyseren van hoe AI-cheats worden opgebouwd en hoe zij gebruikersinput manipuleren, het trainen van een model voor anomaliedetectie, en het evalueren van methoden voor het herkennen van afwijkend spelersgedrag.
 
-\section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
+Het beoogde resultaat is een proof-of-concept en een onderbouwde aanbeveling voor detectiemethoden die toepasbaar zijn binnen moderne anti-cheatsystemen.
+
+\section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this Bachelor Thesis}}%
 \label{sec:opzet-bachelorproef}
+
+Deze bachelorproef is als volgt opgebouwd:
+
+\begin{itemize}
+    \item \textbf{Hoofdstuk 1 – Inleiding:} bespreekt het probleem en de relevantie van cheatdetectie.
+    \item \textbf{Hoofdstuk 2 – Analyse van inputmanipulatie:} onderzoekt hoe een tweede computer muis- en toetsenbordinput kan vervalsen.
+    \item \textbf{Hoofdstuk 3 – Modeltraining:} bespreekt hoe anomaliedetectiemodellen worden getraind.
+    \item \textbf{Hoofdstuk 4 – Data-analyse:} analyseert verzamelde inputdata om afwijkend gedrag te identificeren.
+    \item \textbf{Hoofdstuk 5 – Resultaten:} presenteert het raamwerk en de aanbevolen methoden.
+    \item \textbf{Hoofdstuk 6 – Conclusie en aanbevelingen.}
+\end{itemize}
 
 % Het is gebruikelijk aan het einde van de inleiding een overzicht te
 % geven van de opbouw van de rest van de tekst. Deze sectie bevat al een aanzet
 % die je kan aanvullen/aanpassen in functie van je eigen tekst.
-
-De rest van deze bachelorproef is als volgt opgebouwd:
-
-In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie.
-
-In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
-
-% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
-
-In Hoofdstuk~\ref{ch:conclusie}, tenslotte, wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.
