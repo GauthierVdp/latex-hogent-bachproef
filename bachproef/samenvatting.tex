@@ -45,4 +45,12 @@
 
 \chapter*{\IfLanguageName{dutch}{Samenvatting}{Abstract}}
 
-\lipsum[1-4]
+In de huidige videogame-industrie vormen First Person Shooters (FPS) een van de meest populaire genres. De competitieve aard hiervan zorgt echter voor een voortdurende stroom aan nieuwe cheat-methoden. Deze bachelorproef onderzoekt de opkomst van AI-gebaseerde cheats die gebruikmaken van deep learning en externe hardware, en hoe deze gedetecteerd kunnen worden.  
+
+De aanleiding voor dit onderzoek is dat traditionele anti-cheatsystemen, zoals Valve Anti-Cheat (VAC), minder effectief zijn tegen moderne 'external cheats'. Omdat deze cheats geen directe wijzigingen aanbrengen in het spelgeheugen, maar videobeelden analyseren via computer vision en muisinput simuleren via hardware zoals een Arduino Leonardo, laten ze geen softwarematige sporen achter op de host-computer. De centrale onderzoeksvraag luidt dan ook: "Hoe worden AI-gebaseerde cheats ontwikkeld en welke methodes kunnen worden gebruikt om deze te identificeren aan de hand van een analyse op spelersgedrag en interactiepatronen?".
+
+Het onderzoek werd uitgevoerd aan de hand van een fysieke proof-of-concept. Hierbij werd een opstelling gebouwd met twee computers waarbij het beeld van de host-computer via een HDMI-capture card werd geanalyseerd door een AI-model (YOLO) op een tweede computer. De gedetecteerde vijanden werden automatisch gevolgd door muisbewegingen te emuleren via een Arduino Leonardo. Vervolgens werd er een dataset opgebouwd van zowel menselijke als geautomatiseerde muisbewegingen om een anomaliedetectiemodel te trainen.
+
+De resultaten tonen aan dat AI-gebaseerde cheats met relatief eenvoudige hardware en deep-learning-modellen een zeer hoge nauwkeurigheid kunnen bereiken zonder detectie door klassieke systemen. Uit de gedragsanalyse bleek echter dat geautomatiseerde bewegingen mathematisch consistenter en minder grillig zijn dan menselijke input. Het getrainde machine-learningmodel slaagde erin om deze subtiele verschillen in snelheid, hoekveranderingen en reactietijden te identificeren.
+
+De relevantie van dit onderzoek voor het werkveld is groot: het toont aan dat de focus van anti-cheat-beveiliging moet verschuiven van software-scans naar geavanceerde gedragsanalyse. De scriptie concludeert met een raamwerk en aanbevelingen voor game-ontwikkelaars om machine-learningmethoden te integreren die specifiek gericht zijn op het herkennen van onnatuurlijke interactiepatronen.

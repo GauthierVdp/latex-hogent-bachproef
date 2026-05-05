@@ -1,0 +1,125 @@
+\chapter{\IfLanguageName{dutch}{AI gebaseerde cheats}{AI-gebaseerde-cheats}}
+\label{ch:AI-gebaseerde-cheats}
+
+\section{Traditionele cheats}
+
+Historisch gezien maakten cheats in FPS-games voornamelijk gebruik van directe interactie met het geheugen van het spelproces. Dit wordt ook wel \textit{memory manipulation} genoemd.
+\\\\
+Wanneer een game draait, worden belangrijke gegevens zoals spelerposities, gezondheid, munitie en zichtlijnen opgeslagen in het werkgeheugen (RAM). Traditionele cheats proberen deze data uit te lezen of te wijzigen.
+
+Dit gebeurt via technieken zoals:
+\begin{itemize}
+    \item \textbf{Memory reading}: het uitlezen van variabelen zoals vijandposities;
+    \item \textbf{Memory writing}: het aanpassen van waarden (bijvoorbeeld oneindige health);
+    \item \textbf{DLL-injectie}: het injecteren van code in het gameproces;
+    \item \textbf{Hooking}: het onderscheppen van functies binnen de game-engine.
+\end{itemize}
+
+Een typisch voorbeeld is een \textit{aimbot}. Hierbij leest de cheat de positie van vijanden uit het geheugen en berekent vervolgens automatisch de benodigde kijkrichting. Daarna wordt de view angle van de speler direct aangepast in het geheugen van de game.
+
+Hoewel deze aanpak zeer krachtig is, laat ze duidelijke sporen na:
+\begin{itemize}
+    \item verdachte processen;
+    \item gewijzigde geheugenwaarden;
+    \item ongeautoriseerde code-injectie.
+\end{itemize}
+
+Moderne anti-cheatsystemen zoals VAC en BattlEye zijn specifiek ontworpen om deze technieken te detecteren.
+
+\section{Externe en AI-gebaseerde cheats}
+
+Om detectie te vermijden, evolueren cheats steeds meer richting externe systemen. In plaats van het spelgeheugen te manipuleren, analyseren deze systemen enkel wat zichtbaar is op het scherm.
+
+Deze aanpak maakt gebruik van \textit{computer vision} en \textit{deep learning}.
+
+Een typisch AI-gebaseerd cheatsysteem werkt als volgt:
+\begin{enumerate}
+    \item Het videobeeld van de game wordt gecapteerd (bijvoorbeeld via een capture card);
+    \item Elk frame wordt doorgestuurd naar een AI-model;
+    \item Het model detecteert vijanden via objectdetectie;
+    \item De positie van het doelwit wordt omgezet naar schermcoördinaten;
+    \item Op basis hiervan wordt een muisbeweging berekend.
+\end{enumerate}
+
+Veelgebruikte modellen hiervoor zijn gebaseerd op YOLO (\textit{You Only Look Once}), een real-time objectdetectie-algoritme.
+
+Het model verwerkt een beeld \(I\) en produceert een set bounding boxes:
+
+\[
+B = \{(x, y, w, h)\}
+\]
+
+waarbij:
+\begin{itemize}
+    \item \((x, y)\) het middelpunt van de detectie is;
+    \item \(w\) en \(h\) de breedte en hoogte van de bounding box zijn.
+\end{itemize}
+
+De afwijking tussen het midden van het scherm en het doelwit wordt berekend als:
+
+\[
+\Delta x = x_{target} - x_{center}
+\]
+\[
+\Delta y = y_{target} - y_{center}
+\]
+
+Deze afwijking wordt vervolgens omgezet naar muisinput.
+
+Omdat dit systeem geen toegang heeft tot het spelgeheugen, is het veel moeilijker detecteerbaar door traditionele anti-cheats.
+
+\section{Gebruik van XIM-apparaten}
+
+Een andere methode om detectie te vermijden is het gebruik van zogenaamde \textit{XIM-apparaten}.
+
+Een XIM fungeert als een hardware-intermediair tussen inputapparaten (zoals muis en toetsenbord) en een console of pc. Het apparaat vertaalt input naar een vorm die het systeem verwacht, bijvoorbeeld controller-input.
+
+In het kader van cheats kan een XIM gebruikt worden om:
+\begin{itemize}
+    \item geautomatiseerde input te injecteren;
+    \item aim assist van consoles te misbruiken;
+    \item externe scripts uit te voeren zonder software-installatie op de gamecomputer.
+\end{itemize}
+
+Omdat de input via hardware verloopt, lijkt deze voor het besturingssysteem volledig legitiem.
+
+\section{DMA-gebaseerde cheats}
+
+Een nog geavanceerdere techniek is het gebruik van \textit{Direct Memory Access} (DMA).
+
+DMA-cheats maken gebruik van externe hardware (bijvoorbeeld een PCIe-kaart) die rechtstreeks toegang heeft tot het geheugen van de gamecomputer.
+
+In tegenstelling tot softwarematige cheats:
+\begin{itemize}
+    \item draait de cheat niet op de gamecomputer zelf;
+    \item wordt het geheugen extern uitgelezen;
+    \item zijn er geen zichtbare processen of injecties.
+\end{itemize}
+
+Het systeem werkt typisch als volgt:
+\begin{enumerate}
+    \item Een DMA-kaart wordt aangesloten op de game-pc;
+    \item Een tweede computer leest via deze kaart het RAM-geheugen uit;
+    \item Belangrijke data zoals spelerposities worden geëxtraheerd;
+    \item Deze data wordt gebruikt voor bijvoorbeeld ESP of aimbot-functionaliteit.
+\end{enumerate}
+
+Omdat deze methode buiten het besturingssysteem opereert, is detectie bijzonder moeilijk.
+
+\section{Vergelijking van technieken}
+
+De evolutie van cheats kan samengevat worden in drie grote categorieën:
+
+\begin{itemize}
+    \item \textbf{Interne cheats}: werken via geheugenmanipulatie, maar zijn detecteerbaar;
+    \item \textbf{Externe AI-cheats}: gebruiken computer vision en vermijden directe interactie;
+    \item \textbf{Hardware-gebaseerde cheats (XIM/DMA)}: opereren buiten het systeem en zijn het moeilijkst te detecteren.
+\end{itemize}
+
+\section{Conclusie}
+
+AI-gebaseerde cheats vormen een nieuwe generatie van valsspelen waarbij klassieke detectiemethoden onvoldoende zijn.
+
+Door gebruik te maken van computer vision, externe hardware en indirecte inputgeneratie, kunnen deze systemen functioneren zonder directe interactie met de game-engine.
+
+Dit maakt ze niet alleen moeilijker detecteerbaar, maar ook schaalbaarder en technologisch geavanceerder dan traditionele cheats.

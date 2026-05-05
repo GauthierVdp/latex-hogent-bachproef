@@ -1,0 +1,168 @@
+\chapter{\IfLanguageName{dutch}{Recoil binnen FPS games}{Recoil binnen FPS games}}
+\label{ch:Recoil-binnen-FPS-games}
+
+Recoil (terugslag) is een mechanisme dat wordt gebruikt in FPS-games om het schieten realistischer en uitdagender te maken. Wanneer een speler schiet met een wapen, blijft de camera niet perfect stabiel: het richtpunt verschuift licht omhoog en soms ook opzij.
+
+Vanuit technisch perspectief kan recoil worden gezien als een kleine wijziging in de kijkrichting van de speler telkens wanneer een schot wordt geregistreerd door de game-engine.
+
+\section{Basisconcept van recoil}
+
+In een FPS-game heeft een speler een kijkrichting, meestal voorgesteld als een vector:
+
+\[
+\vec{d} = (x, y, z)
+\]
+
+Wanneer een speler schiet, wordt deze richting aangepast door een recoilvector:
+
+\[
+\vec{d'} = \vec{d} + \vec{r}
+\]
+
+waarbij:
+
+\begin{itemize}
+    \item $\vec{d}$ de oorspronkelijke kijkrichting is;
+    \item $\vec{r}$ de recoil-invloed (terugslagvector);
+    \item $\vec{d'}$ de nieuwe, gewijzigde kijkrichting is.
+\end{itemize}
+
+Deze eenvoudige vergelijking toont dat recoil in essentie een toevoeging is aan de richtvector van de speler.
+
+\section{Hoe recoil technisch wordt toegepast}
+
+Wanneer een speler een wapen afvuurt, genereert de game-engine een \textit{firing event}. Dit event zorgt ervoor dat een kracht wordt toegepast op de camera of het wapenmodel.
+
+Deze kracht wordt opgesplitst in twee componenten:
+
+\begin{itemize}
+    \item horizontale afwijking (yaw);
+    \item verticale afwijking (pitch).
+\end{itemize}
+
+In veel games wordt dit model vereenvoudigd als:
+
+\[
+\Delta \text{pitch} = R_v
+\]
+\[
+\Delta \text{yaw} = R_h
+\]
+
+waarbij:
+\begin{itemize}
+    \item $R_v$ verticale recoil is;
+    \item $R_h$ horizontale recoil is.
+\end{itemize}
+
+De nieuwe kijkrichting wordt dan:
+
+\[
+\theta' = \theta + (\Delta \text{pitch}, \Delta \text{yaw})
+\]
+
+\section{Waarom recoil bestaat}
+
+Recoil wordt toegevoegd om te vermijden dat spelers perfect kunnen richten zonder enige correctie. Zonder recoil zou elke kogel exact op het richtpunt terechtkomen, wat de moeilijkheid en realisme sterk zou verminderen.
+
+Door recoil moeten spelers dus continu corrigeren:
+
+\[
+\text{correctie} = - \vec{r}
+\]
+
+Dit betekent dat een speler actief in de tegenovergestelde richting moet bewegen om stabiel te blijven richten.
+\newpage
+\section{Parameters die recoil bepalen}
+
+De sterkte van recoil hangt af van verschillende wapenparameters die door de game-ontwikkelaar worden ingesteld:
+
+\begin{itemize}
+    \item verticale recoil magnitude ($R_v$);
+    \item horizontale variatie ($R_h$);
+    \item fire rate ($f$);
+    \item recovery speed ($s$);
+    \item spread of bloom ($b$).
+\end{itemize}
+
+Een vereenvoudigd model voor cumulatieve recoil kan worden weergegeven als:
+
+\[
+R_{total} = n \cdot R_{shot}
+\]
+
+waarbij:
+\begin{itemize}
+    \item $n$ het aantal opeenvolgende schoten is;
+    \item $R_{shot}$ de recoil per schot is.
+\end{itemize}
+
+Bij wapens met een hoge fire rate groeit deze waarde sneller, waardoor recoil moeilijker te controleren wordt.
+
+\section{Recoil in game engines}
+
+Game engines implementeren recoil meestal via meerdere systemen tegelijk:
+
+\begin{itemize}
+    \item vaste recoil patterns;
+    \item random variatie (spread);
+    \item camera shake;
+    \item animatie-effecten.
+\end{itemize}
+
+Deze kunnen worden opgesplitst in twee lagen:
+
+\begin{enumerate}
+    \item \textbf{Weapon recoil}: beïnvloedt waar de kogel naartoe gaat;
+    \item \textbf{Camera recoil}: beïnvloedt enkel wat de speler ziet.
+\end{enumerate}
+
+Deze scheiding maakt het mogelijk om realisme te simuleren zonder dat de gameplay volledig onvoorspelbaar wordt.
+
+\section{Soorten recoil}
+
+\subsection{Vertical recoil}
+
+Vertical recoil is een constante of progressieve stijging in de verticale richting:
+
+\[
+R_v(t) = a \cdot t
+\]
+
+waarbij $t$ het aantal schoten is en $a$ een constante kracht.
+
+\subsection{Random recoil}
+
+Random recoil voegt willekeur toe binnen een bepaalde marge:
+
+\[
+R = R_{base} + \epsilon
+\]
+
+waarbij $\epsilon$ een willekeurige waarde is binnen een bepaald bereik.
+
+Dit wordt vaak gebruikt om elke schietreeks uniek te maken.
+
+\subsection{Pattern recoil}
+
+Pattern recoil gebruikt een vaste reeks waarden:
+
+\[
+R = \{r_1, r_2, r_3, ..., r_n\}
+\]
+
+Elke kogel heeft een vooraf bepaalde recoilvector. Hierdoor kan het patroon worden geleerd en voorspeld.
+
+\subsection{Camera recoil}
+
+Camera recoil beïnvloedt enkel de visuele camera:
+
+\[
+\text{camera\_offset} = f(R)
+\]
+
+Dit verandert niets aan de kogelbaan, maar enkel aan wat de speler ziet.
+
+\section{Relevantie}
+
+Omdat recoil wiskundig kan worden beschreven met vectoren en functies, kan het ook worden geanalyseerd als een voorspelbaar systeem. Dit vormt de basis voor verdere studie van compensatie- en analysemethoden binnen FPS-games.

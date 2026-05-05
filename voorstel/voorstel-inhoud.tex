@@ -1,84 +1,108 @@
 %---------- Inleiding ---------------------------------------------------------
 
-% TODO: Is dit voorstel gebaseerd op een paper van Research Methods die je
-% vorig jaar hebt ingediend? Heb je daarbij eventueel samengewerkt met een
-% andere student?
-% Zo ja, haal dan de tekst hieronder uit commentaar en pas aan.
-
-%\paragraph{Opmerking}
-
-% Dit voorstel is gebaseerd op het onderzoeksvoorstel dat werd geschreven in het
-% kader van het vak Research Methods dat ik (vorig/dit) academiejaar heb
-% uitgewerkt (met medesturent VOORNAAM NAAM als mede-auteur).
-% 
-
 \section{Inleiding}%
 \label{sec:inleiding}
 
-Waarover zal je bachelorproef gaan? Introduceer het thema en zorg dat volgende zaken zeker duidelijk aanwezig zijn:
-
-\begin{itemize}
-  \item kaderen thema
-  \item de doelgroep
-  \item de probleemstelling en (centrale) onderzoeksvraag
-  \item de onderzoeksdoelstelling
-\end{itemize}
-
-Denk er aan: een typische bachelorproef is \textit{toegepast onderzoek}, wat betekent dat je start vanuit een concrete probleemsituatie in bedrijfscontext, een \textbf{casus}. Het is belangrijk om je onderwerp goed af te bakenen: je gaat voor die \textit{ene specifieke probleemsituatie} op zoek naar een goede oplossing, op basis van de huidige kennis in het vakgebied.
-
-De doelgroep moet ook concreet en duidelijk zijn, dus geen algemene of vaag gedefinieerde groepen zoals \emph{bedrijven}, \emph{developers}, \emph{Vlamingen}, enz. Je richt je in elk geval op it-professionals, een bachelorproef is geen populariserende tekst. Eén specifiek bedrijf (die te maken hebben met een concrete probleemsituatie) is dus beter dan \emph{bedrijven} in het algemeen.
-
-Formuleer duidelijk de onderzoeksvraag! De begeleiders lezen nog steeds te veel voorstellen waarin we geen onderzoeksvraag terugvinden.
-
-Schrijf ook iets over de doelstelling. Wat zie je als het concrete eindresultaat van je onderzoek, naast de uitgeschreven scriptie? Is het een proof-of-concept, een rapport met aanbevelingen, \ldots Met welk eindresultaat kan je je bachelorproef als een succes beschouwen?
+In de wereld van competitieve games is een eerlijk speelveld essentieel. Dit vormt het fundament van de hedendaagse gamingindustrie, waarin miljarden euro’s omgaan. De afgelopen jaren is er echter een zorgwekkende verschuiving waarneembaar: de opkomst van valsspelen via Artificiële Intelligentie (AI). Dit vormt een aanzienlijk probleem, aangezien traditionele anti-cheat-systemen die speuren naar gemodificeerde gamebestanden niet in staat zijn deze nieuwe vorm van fraude te detecteren.
+\\\\
+Deze AI-gebaseerde cheats opereren op een geavanceerde wijze: er wordt veelal gebruikgemaakt van een externe computer om de beelden op het scherm te analyseren, waarna menselijke input (zoals muisbewegingen en toetsaanslagen) wordt gesimuleerd. Doordat de cheat onafhankelijk van de game-software functioneert, blijft deze nagenoeg onzichtbaar voor gangbare beveiliging. De doelgroep voor dit onderzoek bestaat uit IT-professionals en specialisten op het gebied van anti-cheat-software binnen de gamingindustrie. Dit toegepaste onderzoek beoogt een concrete oplossing te bieden voor dit groeiende probleem.
+\\\\
+Hiertoe analyseert dit onderzoek het gedrag van de speler. Data met betrekking tot muisbewegingen en reactiesnelheid worden onderzocht om patronen te identificeren die afwijken van hetgeen fysiek realistisch is voor een menselijke gebruiker. Dit leidt tot de centrale onderzoeksvraag:
+\\\\
+\textit{Hoe worden AI-gebaseerde cheats ontwikkeld en welke methoden, gebaseerd op de analyse van spelersgedrag en interactiepatronen, kunnen worden aangewend om deze effectief te identificeren?}
+\\\\
+Het uiteindelijke doel is het leveren van een bruikbaar resultaat in de vorm van een rapport met onderbouwde aanbevelingen. Hiermee wordt aangetoond welke Machine Learning-technieken het meest geschikt zijn voor het herkennen van afwijkend, geautomatiseerd spelersgedrag, om zodoende bij te dragen aan een eerlijkere online spelomgeving.
 
 %---------- Stand van zaken ---------------------------------------------------
 
-\section{Literatuurstudie}%
+\section{Literatuurstudie}
 \label{sec:literatuurstudie}
 
-Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, doorlopende tekst over het onderzoeksdomein van je bachelorproef. Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, en niet zozeer op populariserende teksten voor een breed publiek. Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen (die misschien de aanleiding waren tot je onderzoeksvraag!)?
-
-Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
-
-Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
-
-Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis \emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. Baseer nooit teveel aansluitende tekst op eenzelfde bron.
-
-Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle nodige info aanwezig is om de bron terug te vinden (zoals uitvoerig besproken in de lessen Research Methods).
-
-% Voor literatuurverwijzingen zijn er twee belangrijke commando's:
-% \autocite{KEY} => (Auteur, jaartal) Gebruik dit als de naam van de auteur
-%   geen onderdeel is van de zin.
-% \textcite{KEY} => Auteur (jaartal)  Gebruik dit als de auteursnaam wel een
-%   functie heeft in de zin (bv. ``Uit onderzoek door Doll & Hill (1954) bleek
-%   ...'')
-
-Je mag deze sectie nog verder onderverdelen in subsecties als dit de structuur van de tekst kan verduidelijken.
+De opkomst van AI-gebaseerde cheats is een van de meest uitdagende ontwikkelingen binnen het domein van anti-cheat-beveiliging. Conventionele oplossingen richten zich primair op de detectie van gemodificeerde bestanden, verdachte processen of manipulaties in het computergeheugen. Deze methoden schieten echter tekort wanneer de cheat buiten de directe game-omgeving opereert. De zogenaamde "external cheats" functioneren volledig onafhankelijk van de spelsoftware en communiceren uitsluitend via beeldherkenning en gesimuleerde gebruikersinput, wat detectie door traditionele mechanismen bemoeilijkt \autocite{Kunstner2024}.
+\\\\
+Een significante verschuiving wordt veroorzaakt door de integratie van Machine Learning-technieken in moderne cheats. Onderzoek toont aan dat neurale netwerken niet alleen in staat zijn om tegenstanders in realtime te detecteren, maar ook om autonome muisbewegingen te genereren \autocite{Neuman2023}. Deze systemen verwerken live beelden via objectdetectie-algoritmen (zoals YOLO of EfficientDet) en vertalen de resultaten direct naar acties, zoals het automatisch richten op tegenstanders of het compenseren van de 'recoil' (terugslag). Doordat deze systemen zijn geoptimaliseerd voor een lage latentie en hoge precisie, kunnen zij menselijke interactie nabootsen op een wijze die handmatig nauwelijks te onderscheiden is.
+\\\\
+Terwijl interne cheats doorgaans sporen achterlaten via technieken zoals DLL-injectie, maken externe cheats gebruik van hardware of een tweede computer om de beelduitvoer te analyseren (bijvoorbeeld via HDMI-capture). Vervolgens wordt gesimuleerde input via HID-emulatie naar de primaire computer verzonden \autocite{Liu2020}. Omdat deze invoer voor het besturingssysteem identiek lijkt aan legitieme menselijke handelingen, vormt dit een fundamenteel probleem voor bestaande architecturen.
+\\\\
+Onderzoek naar de detectie van dergelijk gedrag richt zich daarom in toenemende mate op gedragsanalyse. Pinto et al. stellen dat tijdreeksmodellen uitermate geschikt zijn voor het onderscheiden van menselijke versus geautomatiseerde input, op basis van kenmerken zoals reactiesnelheid en de kinetiek van muisbewegingen \autocite{Pinto2021}. Deep learning-modellen, specifiek convolutionele en recurrente netwerken, behalen hierbij een significant hogere nauwkeurigheid dan statistische methoden.
+\\\\
+Literatuur over menselijke motoriek bevestigt dat natuurlijke bewegingen nooit volledig lineair of perfect reproduceerbaar zijn; ze vertonen variaties in acceleratie en timing die complex zijn om te simuleren \autocite{VanderKemp2019}. Wanneer AI-cheats deze patronen trachten te imiteren, ontstaan vaak subtiele inconsistenties, zoals onnatuurlijk vloeiende trajecten of identieke sequenties in opeenvolgende acties.
+\\\\
+Door de inzet van anomaliedetectie-algoritmen, zoals Isolation Forests of auto-encoders, kunnen afwijkingen worden geïdentificeerd zonder dat een specifieke cheat-strategie vooraf bekend hoeft te zijn \autocite{Chen2022}. Dit is essentieel in een snel evoluerend domein. Ondanks bestaand onderzoek naar cheatdetectie is er momenteel een gebrek aan literatuur die zich specifiek richt op externe, AI-gebaseerde cheats die steunen op beeldherkenning. Daarnaast ontbreekt een systematische evaluatie van het gedrag van dergelijke cheats binnen specifieke game-engines, wat de relevantie van dit onderzoek onderbouwt.
 
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}
 
-Hier beschrijf je hoe je van plan bent het onderzoek te voeren. Welke onderzoekstechniek ga je toepassen om elk van je onderzoeksvragen te beantwoorden? Gebruik je hiervoor literatuurstudie, interviews met belanghebbenden (bv.~voor requirements-analyse), experimenten, simulaties, vergelijkende studie, risico-analyse, PoC, \ldots?
+Het onderzoek combineert de ontwikkeling van AI-gebaseerde cheats met de daaropvolgende detectie ervan. De focus ligt op technische diepgang en meetbare resultaten. De totale looptijd van dit onderzoek wordt geschat op twaalf weken.
 
-Valt je onderwerp onder één van de typische soorten bachelorproeven die besproken zijn in de lessen Research Methods (bv.\ vergelijkende studie of risico-analyse)? Zorg er dan ook voor dat we duidelijk de verschillende stappen terug vinden die we verwachten in dit soort onderzoek!
+\subsection{1. Opbouw van de projectomgeving}
+\begin{itemize}
+    \item \textbf{Doel:} Onderzoeken hoe computerinput (muis en toetsenbord) gesimuleerd kan worden met behulp van een tweede computer.
+    \item \textbf{Stappen:}
+    \begin{enumerate}
+        \item \textbf{Hardware-analyse:} Onderzoek naar de verschillende hardwarematige mogelijkheden om gebruikersinput te emuleren.
+        \item \textbf{Ontwikkeling testomgeving:} Het opzetten van een omgeving waarin beeldmateriaal wordt uitgelezen, het cheat-model wordt getraind en gebruikersinput wordt gelogd voor analyse.
+    \end{enumerate}
+    \item \textbf{Duur en Deliverables:}
+    \begin{itemize}
+        \item \textbf{Duur:} 3 weken.
+        \item \textbf{Deliverable:} Een functionele opstelling voor beeldanalyse op een tweede computer, inclusief een testomgeving met logfunctionaliteit.
+    \end{itemize}
+    \item \textbf{Tools:} Raspberry Pi, VS Code.
+\end{itemize}
 
-Vermijd onderzoekstechnieken die geen objectieve, meetbare resultaten kunnen opleveren. Enquêtes, bijvoorbeeld, zijn voor een bachelorproef informatica meestal \textbf{niet geschikt}. De antwoorden zijn eerder meningen dan feiten en in de praktijk blijkt het ook bijzonder moeilijk om voldoende respondenten te vinden. Studenten die een enquête willen voeren, hebben meestal ook geen goede definitie van de populatie, waardoor ook niet kan aangetoond worden dat eventuele resultaten representatief zijn.
+\subsection{2. Ontwikkelen van AI-gebaseerde cheats}
+\begin{itemize}
+    \item \textbf{Doel:} Het ontwikkelen van de benodigde scripts voor de AI-gebaseerde cheat-functionaliteiten.
+    \item \textbf{Stappen:}
+    \begin{enumerate}
+        \item \textbf{Recoil-compensatiescript:} Ontwikkeling van een script dat de terugslagpatronen van wapens neutraliseert door tegenovergestelde bewegingen te genereren.
+        \item \textbf{Objectdetectiemodel:} Het trainen van een model voor de detectie van tegenstanders in diverse omgevingen, inclusief situaties waarbij de vijand deels achter obstakels verscholen gaat.
+        \item \textbf{Realtime reactiescript:} Een script dat de live-beelden analyseert en visuele indicatoren (bounding boxes) plaatst bij gedetecteerde entiteiten.
+    \end{enumerate}
+    \item \textbf{Duur en Deliverables:}
+    \begin{itemize}
+        \item \textbf{Duur:} 3 weken.
+        \item \textbf{Deliverable:} Drie gevalideerde scripts voor recoil-controle en vijanddetectie.
+    \end{itemize}
+    \item \textbf{Tools:} VS Code.
+\end{itemize}
 
-Uit dit onderdeel moet duidelijk naar voor komen dat je bachelorproef ook technisch voldoen\-de diepgang zal bevatten. Het zou niet kloppen als een bachelorproef informatica ook door bv.\ een student marketing zou kunnen uitgevoerd worden.
+\subsection{3. Integratie en datalogging}
+\begin{itemize}
+    \item \textbf{Doel:} Het samenvoegen van de afzonderlijke scripts tot één coherent systeem en het verzamelen van logdata.
+    \item \textbf{Stappen:}
+    \begin{enumerate}
+        \item \textbf{Systeemintegratie:} Koppeling van de scripts zodat het systeem autonoom kan richten en schieten zodra een doelwit wordt geïdentificeerd, waarbij de gebruiker de controle herwint na eliminatie van het doelwit.
+        \item \textbf{Data-acquisitie:} Het loggen van een combinatie van menselijke en AI-gebaseerde input (muisbewegingen, reactietijden) om een dataset te genereren voor het detectiemodel.
+    \end{enumerate}
+    \item \textbf{Duur en Deliverables:}
+    \begin{itemize}
+        \item \textbf{Duur:} 3 weken.
+        \item \textbf{Deliverable:} Een geïntegreerd softwaresysteem en een dataset in CSV-formaat.
+    \end{itemize}
+    \item \textbf{Tools:} VS Code.
+\end{itemize}
 
-Je beschrijft ook al welke tools (hardware, software, diensten, \ldots) je denkt hiervoor te gebruiken of te ontwikkelen.
-
-Probeer ook een tijdschatting te maken. Hoe lang zal je met elke fase van je onderzoek bezig zijn en wat zijn de concrete \emph{deliverables} in elke fase?
+\subsection{4. Model-evaluatie en rapportage}
+\begin{itemize}
+    \item \textbf{Doel:} Het trainen van een anti-cheat-model en het uitvoeren van analyses op de verzamelde data.
+    \item \textbf{Stappen:}
+    \begin{enumerate}
+        \item \textbf{Training detectiemodel:} Gebruik van de dataset om een model te trainen dat anomalieën in inputpatronen herkent.
+        \item \textbf{Realtime validatie:} Het model live testen tijdens gameplay om de effectiviteit van de anomaliedetectie te verifiëren.
+    \end{enumerate}
+    \item \textbf{Duur en Deliverables:}
+    \begin{itemize}
+        \item \textbf{Duur:} 3 weken.
+        \item \textbf{Deliverable:} Een werkend prototype van een anti-cheat-systeem en een analyserapport.
+    \end{itemize}
+    \item \textbf{Tools:} VS Code.
+\end{itemize}
 
 %---------- Verwachte resultaten ----------------------------------------------
-\section{Verwacht resultaat, conclusie}%
+\section{Verwacht resultaat en conclusie}%
 \label{sec:verwachte_resultaten}
 
-Hier beschrijf je welke resultaten je verwacht. Als je metingen en simulaties uitvoert, kan je hier al mock-ups maken van de grafieken samen met de verwachte conclusies. Benoem zeker al je assen en de onderdelen van de grafiek die je gaat gebruiken. Dit zorgt ervoor dat je concreet weet welk soort data je moet verzamelen en hoe je die moet meten.
-
-Wat heeft de doelgroep van je onderzoek aan het resultaat? Op welke manier zorgt jouw bachelorproef voor een meerwaarde?
-
-Hier beschrijf je wat je verwacht uit je onderzoek, met de motivatie waarom. Het is \textbf{niet} erg indien uit je onderzoek andere resultaten en conclusies vloeien dan dat je hier beschrijft: het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overeenkomen met de resultaten.
-
+De verwachting is dat dit onderzoek resulteert in een functionele AI-gebaseerde cheat die voldoet aan de technische specificaties en bovendien flexibel inzetbaar is voor verschillende speltitels. Tevens wordt verwacht dat de verzamelde data leiden tot een robuust anti-cheat-model dat in staat is om geautomatiseerde interacties met hoge accuraatheid te onderscheiden van menselijk handelen.

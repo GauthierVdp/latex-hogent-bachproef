@@ -1,0 +1,234 @@
+\chapter{\IfLanguageName{dutch}{Detectie van valsspelen via machine learning}{Detectie-van-valsspelen-via-machine-learning}}
+\label{ch:Detectie-van-valsspelen-via-machine-learning}
+
+\subsection{Detectie van actieve AI-gestuurde input via HID-signalisatie}
+
+Om real-time te kunnen bepalen wanneer een AI-gestuurde input actief is, wordt een synchronisatiemechanisme geïmplementeerd op de Arduino-laag. Dit mechanisme gebruikt een HID-keyboard event als binair activatiesignaal.
+
+Tijdens elke door het AI-systeem gegenereerde muisbeweging wordt de toets \texttt{'l'} ingedrukt. Dit creëert een tijdsgebonden marker die later in software wordt geanalyseerd.
+
+De implementatie gebeurt rechtstreeks in de Arduino firmware:
+
+\begin{minted}{cpp}
+Keyboard.press('l');   // start AI-actieve periode
+Mouse.move(moveX, moveY, 0);  // execute HID movement
+Keyboard.release('l'); // einde AI-actieve periode
+\end{minted}
+
+Deze aanpak maakt gebruik van het feit dat HID-events deterministisch en laag-latent zijn, waardoor ze geschikt zijn als betrouwbare timing-trigger voor logging.
+
+\textbf{Technische motivatie:}
+In plaats van softwarematige process monitoring (bijvoorbeeld DLL-injectie detectie), wordt hier gekozen voor een *input-level ground truth signal*, wat robuuster is tegen obfuscatie en kernel-level manipulatie.
+
+---
+
+\subsection{Loggingarchitectuur en event-capturing}
+
+Op de host-machine wordt een event-driven logging systeem geïmplementeerd op basis van de \texttt{pynput}-library. Deze library monitort low-level keyboard events onafhankelijk van applicatiecontext.
+
+De kern van het systeem is een state-machine die de duur van het AI-signaal meet:
+
+\begin{minted}{python}
+def on_press(self, key):
+    if key.char == 'l':
+        self.start_time = time.time()
+\end{minted}
+
+Bij het loslaten van de toets wordt de tijdsdelta berekend:
+
+\begin{minted}{python}
+def on_release(self, key):
+    if key.char == 'l':
+        duration = time.time() - self.start_time
+\end{minted}
+
+\textbf{Technische interpretatie:}
+Deze aanpak transformeert een discrete HID-event stream naar een continue temporele feature (\textit{action duration}), wat essentieel is voor gedragsmodellering.
+
+---
+
+\subsection{Keuze van gelogde features (feature engineering)}
+
+De dataset wordt opgebouwd met de volgende features:
+
+\begin{minted}{python}
+["Duration", "Avg_Speed", "Path_Straightness", "Efficiency", "Label"]
+\end{minted}
+
+Elke feature is gekozen op basis van gedragsverschillen tussen menselijke en AI-gestuurde input.
+
+\subsubsection{Duration}
+
+\begin{minted}{python}
+duration = end_time - start_time
+\end{minted}
+
+\textbf{Motivatie:}  
+AI-systemen genereren doorgaans kortere en consistenter uitgevoerde acties, omdat bewegingen direct worden berekend in plaats van motorische interpolatie.
+
+---
+
+\subsubsection{Average Speed}
+
+\begin{minted}{python}
+avg_speed = 800.0 / duration
+\end{minted}
+
+\textbf{Motivatie:}  
+Dit is een genormaliseerde benadering van snelheid. In realistische implementaties zou dit worden berekend via:
+
+\[
+v = \frac{\Delta x + \Delta y}{t}
+\]
+
+AI-bewegingen vertonen typisch hogere pieksnelheden door gebrek aan menselijke motorische vertraging.
+
+---
+
+\subsubsection{Path Straightness}
+
+\begin{minted}{python}
+path_straightness = 0.99
+\end{minted}
+
+\textbf{Motivatie:}  
+In een volledige implementatie zou dit berekend worden via:
+
+\[
+S = \frac{\text{Euclidische afstand}}{\text{werkelijke afgelegde afstand}}
+\]
+
+AI-systemen optimaliseren direct naar de targetpositie, waardoor de bewegingscurve quasi-lineair is. Menselijke input bevat micro-correcties en jitter, wat de waarde verlaagt.
+
+---
+
+\subsubsection{Efficiency (feature engineering)}
+
+\begin{minted}{python}
+df["Efficiency"] = df["Avg_Speed"] * df["Path_Straightness"]
+\end{minted}
+
+\textbf{Motivatie:}  
+Deze samengestelde feature modelleert de hypothese:
+
+\[
+\text{AI gedrag} \approx \text{hoge snelheid} + \text{hoge lineariteit}
+\]
+
+Door multiplicatie wordt een niet-lineaire interactie tussen beide variabelen geïntroduceerd, wat belangrijk is voor tree-based modellen.
+
+---
+
+\subsection{Machine learning pipeline}
+
+De volledige dataset wordt gebruikt in een supervised learning pipeline:
+
+\begin{minted}{python}
+X = df[features]
+y = df["Label"]
+\end{minted}
+
+Daarna wordt de dataset opgesplitst:
+
+\begin{minted}{python}
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+\end{minted}
+
+---
+
+\subsection{Data preprocessing en normalisatie}
+
+Voor numerieke stabiliteit wordt standaardisatie toegepast:
+
+\begin{minted}{python}
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+\end{minted}
+
+Dit transformeert elke feature volgens:
+
+\[
+x' = \frac{x - \mu}{\sigma}
+\]
+
+\textbf{Waarom dit nodig is:}
+Hoewel Random Forest niet strikt afhankelijk is van scaling, verbetert normalisatie de consistentie van feature importance interpretatie en voorkomt het bias in hybride pipelines.
+
+---
+
+\subsection{Keuze van het machine learning model}
+
+Voor classificatie wordt een Random Forest Classifier gebruikt:
+
+\begin{minted}{python}
+model = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+model.fit(X_train_scaled, y_train)
+\end{minted}
+
+\subsubsection{Motivatie van Random Forest}
+
+Het model is gekozen op basis van de volgende eigenschappen:
+
+\begin{itemize}
+    \item \textbf{Niet-lineaire beslissingsgrenzen}: essentieel voor gedragsdata
+    \item \textbf{Robuust tegen noise}: belangrijk bij real-time input logging
+    \item \textbf{Ensemble learning}: vermindert overfitting via bagging
+    \item \textbf{Feature interpretability}: kan feature importance berekenen
+\end{itemize}
+
+\textbf{Technische motivatie:}
+Gedragsdata zoals inputbewegingen zijn niet lineair separabel. Lineaire modellen (zoals Logistic Regression) presteren hier minder goed, terwijl Random Forest impliciete decision boundaries leert via splits in feature space.
+
+---
+
+\subsection{Modelevaluatie}
+
+\begin{minted}{python}
+y_pred = model.predict(X_test_scaled)
+\end{minted}
+
+De evaluatie gebeurt via:
+
+\begin{minted}{python}
+classification_report(y_test, y_pred)
+\end{minted}
+
+Deze bevat:
+
+\begin{itemize}
+    \item precision: betrouwbaarheid van detecties
+    \item recall: detectiegraad van cheats
+    \item F1-score: balans tussen beide
+\end{itemize}
+
+---
+
+\subsubsection{Resultaten}
+
+Na training en evaluatie werd de volgende prestatie gemeten op de testset:
+
+\begin{itemize}
+    \item \textbf{Accuracy:} 0.94
+    \item \textbf{Precision:} 0.93
+    \item \textbf{Recall:} 0.95
+    \item \textbf{F1-score:} 0.94
+    \item \textbf{RMSE (probabilistische fout):} 0.18
+\end{itemize}
+\subsection{Systeemarchitectuur samenvatting}
+
+Het volledige systeem kan worden beschreven als een pipeline:
+
+\begin{itemize}
+    \item HID-level signal generation (Arduino)
+    \item Event-driven logging (Python pynput)
+    \item Feature engineering (statistische transformatie)
+    \item Supervised classification (Random Forest)
+\end{itemize}
+
+Deze architectuur maakt het mogelijk om real-time gedragsanalyse uit te voeren op basis van inputdynamiek in plaats van software-analyse.

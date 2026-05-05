@@ -1,51 +1,69 @@
-\chapter{\IfLanguageName{dutch}{Stand van zaken}{State of the art}}%
+\chapter{\IfLanguageName{dutch}{Stand van zaken}{State of the art}}
 \label{ch:stand-van-zaken}
 
-% Tip: Begin elk hoofdstuk met een paragraaf inleiding die beschrijft hoe
-% dit hoofdstuk past binnen het geheel van de bachelorproef. Geef in het
-% bijzonder aan wat de link is met het vorige en volgende hoofdstuk.
+Dit hoofdstuk bevat de literatuurstudie van deze bachelorproef. Het bespreekt de huidige stand van zaken op het gebied van AI-gebaseerde cheats, recoilcompensatie, computer vision en moderne detectiemethoden. Daarnaast wordt onderzocht hoe artificiële intelligentie gebruikt kan worden binnen FPS-games en hoe machine learning ingezet kan worden om verdachte spelersinput te detecteren.
 
-% Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
+\section{Motivatie}
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+De videogame-industrie behoort vandaag tot één van de snelst groeiende entertainmentsectoren ter wereld. Volgens schattingen van Grand View Research zal de wereldwijde marktwaarde van de gamingindustrie in 2026 ongeveer 370 miljard euro bedragen en verder stijgen tot meer dan 500 miljard euro tegen 2030.
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+\url{https://www.grandviewresearch.com/industry-analysis/gaming-industry}
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+Dankzij online multiplayergames kunnen spelers wereldwijd met elkaar verbonden worden zolang zij beschikken over een stabiele internetverbinding. Hierdoor worden videogames toegankelijker voor een steeds groter publiek.
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+Binnen deze industrie behoren \textit{First Person Shooters} (FPS-games) al jarenlang tot de populairste genres. FPS-games combineren snelle gameplay, competitiviteit en samenwerking tussen spelers. Miljoenen spelers nemen dagelijks deel aan online competitieve matches waarin reactiesnelheid, nauwkeurigheid en spelinzicht een belangrijke rol spelen.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{grail.jpg}
-  \caption[Voorbeeld figuur.]{\label{fig:grail}Voorbeeld van invoegen van een figuur. Zorg altijd voor een uitgebreid bijschrift dat de figuur volledig beschrijft zonder in de tekst te moeten gaan zoeken. Vergeet ook je bronvermelding niet!}
-\end{figure}
+De competitieve aard van FPS-games brengt echter ook problemen met zich mee. Een groot aantal spelers probeert via externe hulpmiddelen een oneerlijk voordeel te verkrijgen tegenover andere spelers. Dit fenomeen staat bekend als cheaten.
 
-\begin{listing}
-  \begin{minted}{python}
-    import pandas as pd
-    import seaborn as sns
+Moderne cheats bestaan niet langer enkel uit eenvoudige software die rechtstreeks het spel manipuleert, maar maken steeds vaker gebruik van geavanceerde technieken zoals machine learning, computer vision en externe hardware.
 
-    penguins = sns.load_dataset('penguins')
-    sns.relplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species")
-  \end{minted}
-  \caption[Voorbeeld codefragment]{Voorbeeld van het invoegen van een codefragment.}
-\end{listing}
+Naast softwarematige cheats bestaan er ook hardware-oplossingen zoals XIM-apparaten en de Cronus Zen. Deze toestellen manipuleren gebruikersinput om functies zoals automatische recoilcompensatie of aim assist mogelijk te maken. Hierdoor ontstaat een voortdurende strijd tussen ontwikkelaars van cheats en ontwikkelaars van anti-cheatsystemen.
 
-\lipsum[7-20]
+Om de werking van dergelijke systemen beter te begrijpen, is het belangrijk eerst inzicht te krijgen in de technische werking van FPS-games en de mechanismen waarop deze cheats gebaseerd zijn.
 
-\begin{table}
-  \centering
-  \begin{tabular}{lcr}
-    \toprule
-    \textbf{Kolom 1} & \textbf{Kolom 2} & \textbf{Kolom 3} \\
-    $\alpha$         & $\beta$          & $\gamma$         \\
-    \midrule
-    A                & 10.230           & a                \\
-    B                & 45.678           & b                \\
-    C                & 99.987           & c                \\
-    \bottomrule
-  \end{tabular}
-  \caption[Voorbeeld tabel]{\label{tab:example}Voorbeeld van een tabel.}
-\end{table}
 
+\section{Detectie van valsspelen via machine learning}
+
+Traditionele anti-cheatsystemen detecteren voornamelijk bekende softwareprocessen, geheugencorruptie of verdachte bestanden. Externe AI-cheats laten echter vaak geen directe sporen achter binnen het spel zelf.
+
+Daarom verschuift de focus van moderne detectiesystemen steeds meer naar gedragsanalyse.
+
+Bij gedragsanalyse wordt niet gekeken naar de cheatsoftware zelf, maar naar het gedrag van de speler. Hierbij kunnen kenmerken zoals muisbewegingen, reactietijden, bewegingssnelheden en richtingsveranderingen geanalyseerd worden.
+
+Voor deze bachelorproef wordt onderzocht hoe machine learning gebruikt kan worden om verdachte muisbewegingen te detecteren.
+
+Hiervoor wordt een dataset opgebouwd die onder andere volgende informatie bevat:
+
+\begin{itemize}
+    \item muisverplaatsing over tijd;
+    \item snelheid van de beweging;
+    \item hoekveranderingen;
+    \item tijdsintervallen;
+    \item informatie over het al dan niet actief zijn van de cheat.
+\end{itemize}
+
+Menselijke muisbewegingen bevatten doorgaans onnauwkeurigheden en variaties in snelheid. Geautomatiseerde bewegingen zijn daarentegen vaak consistenter, sneller en mathematisch nauwkeuriger.
+
+Door een machine-learningmodel te trainen op beide soorten input kan het systeem leren onderscheid maken tussen menselijke gameplay en geautomatiseerde aiming.
+
+Na de trainingsfase kan het model gebruikt worden om verdachte patronen in real time te analyseren en spelersgedrag te classificeren.
+
+\section{Vergelijking met traditionele anti-cheatsystemen}
+
+Traditionele anti-cheatsystemen zoals Valve Anti-Cheat (VAC) en BattlEye zijn voornamelijk gericht op het detecteren van bekende cheatsignaturen, geheugenmanipulatie en verdachte processen.
+
+Hoewel deze systemen effectief zijn tegen klassieke cheats, zijn ze minder geschikt voor externe AI-gebaseerde oplossingen die enkel videobeelden analyseren en input simuleren.
+
+Omdat dergelijke systemen geen directe wijzigingen uitvoeren binnen het spelgeheugen, worden zij moeilijker detecteerbaar via traditionele methoden.
+
+Hierdoor groeit de interesse in AI-gebaseerde anti-cheatsystemen die gedragsanalyse combineren met machine learning om afwijkend spelersgedrag te herkennen.
+
+\section{Conclusie}
+
+Uit de literatuur blijkt dat AI-gebaseerde cheats steeds geavanceerder worden door gebruik te maken van computer vision, deep learning en externe hardware.
+
+Traditionele anti-cheatsystemen ondervinden moeilijkheden bij het detecteren van deze nieuwe generatie cheats omdat zij vaak geen directe sporen achterlaten binnen het spel zelf.
+
+Tegelijk tonen recente onderzoeken aan dat gedragsanalyse en machine learning veelbelovende technieken vormen voor het detecteren van onnatuurlijk spelersgedrag.
+
+Deze inzichten vormen de basis voor deze bachelorproef, waarin onderzocht wordt hoe AI-gebaseerde cheats functioneren, hoe dergelijke systemen technisch opgebouwd worden en hoe machine learning gebruikt kan worden om geautomatiseerde aiming te detecteren.
